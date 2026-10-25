@@ -23,7 +23,7 @@ frontend-install:
 	cd frontend && bun install
 
 frontend-dev:
-	cd frontend && bun run dev
+	cd frontend && bun run dev -- --host
 
 frontend-build:
 	cd frontend && bun run build
