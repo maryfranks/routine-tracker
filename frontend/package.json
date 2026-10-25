@@ -3,6 +3,11 @@
   "private": true,
   "sideEffects": false,
   "type": "module",
+  "engines": {
+    "node": ">=22.0.0",
+    "bun": ">=1.4.4"
+  },
+  "packageManager": "bun@1.4.4",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",

@@ -1,29 +1,63 @@
-# Welcome to your Lovable project
+# Routine Tracker
 
-This project was built with [Lovable](https://lovable.dev).
+A minimalist routine manager: views with a fixed cadence (daily / weekly / monthly),
+tasks that reset cleanly at the end of each period with no rollover, and a history
+log of past periods.
 
-## Build with Lovable
+## Requirements
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+| Tool | Version | Why |
+| --- | --- | --- |
+| Node.js | 22.23.4 (`.nvmrc`, `engines.node`) | runtime for the dev server |
+| Bun | 1.4.4 (`packageManager`, `engines.bun`) | reads `bun.lock`, which pins every package |
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+The exact dependency versions live in `bun.lock`. Installing with Bun reproduces
+this project precisely; installing with npm re-resolves from the `^` ranges in
+`package.json` and can drift to newer versions.
 
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+## Local development
 
 ```sh
 git clone <this-repository-url>
 cd <repository-name>
-npm i
-npm run dev
+
+# if nvm is installed, this picks up .nvmrc automatically
+nvm install && nvm use
+
+# install Bun (macOS / Linux)
+curl -fsSL https://bun.sh/install | bash
+
+bun install
+bun run dev
 ```
+
+Open the URL the dev server prints (usually `http://localhost:8080`).
+
+Prefer npm? `npm install && npm run dev` also works, but it ignores `bun.lock`
+and may pull newer patch versions of the packages.
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `bun run dev` | start the dev server |
+| `bun run build` | production build |
+| `bun run preview` | serve the production build |
+| `bun test` | run the test suite |
+| `bun run lint` | ESLint |
+| `bun run format` | Prettier |
 
 ## Built with
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+- Node.js 22
+- TypeScript 5.8
+- React 19
+- TanStack Start 1.168 (routing + server functions)
+- Vite 8
+- Tailwind CSS 4
+- Vitest 4
+
+## Notes
+
+- No backend or database: all data is stored in the browser's `localStorage`.
+- Demo data and a simulated clock can be toggled from the flask icon in the header.
