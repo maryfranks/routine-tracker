@@ -55,7 +55,15 @@ and may pull newer patch versions of the packages.
 - TanStack Start 1.168 (routing + server functions)
 - Vite 8
 - Tailwind CSS 4
+- shadcn/ui (New York style component library in `src/components/ui/`)
 - Vitest 4
+
+## UI Components (shadcn/ui)
+
+UI components are managed via shadcn/ui (`components.json`). To add new components as needed:
+```sh
+bun x shadcn add <component-name>
+```
 
 ## Notes
 

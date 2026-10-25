@@ -38,6 +38,7 @@ graph TD
 * **Communication Protocol:** RESTful API requests carrying JSON payloads. Authentication credentials are automatically included via secure, HTTP-only cookies managed by the browser.
 * **Data Access Pattern:** All data access goes through `src/services/api.ts` (async, JSON-shaped). The UI uses it exclusively via React Query hooks in `src/hooks/use-routine.ts`, allowing seamless swapping for a REST client.
 * **Period Math & Completion Logic:** Period math (keys, labels, past periods) lives in `src/lib/periods.ts`. Completions are keyed by `taskId + periodKey`, ensuring no rollover state is ever stored.
+* **UI Component Library:** Built using **shadcn/ui** (New York style) with Tailwind CSS, located in `src/components/ui/` and managed via `components.json`.
 
 ### 2. Server Layer (Backend)
 * **Technology:** Python utilizing FastAPI.
