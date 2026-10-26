@@ -14,4 +14,7 @@ Definition of Done:
 - Anything excluded from the task is explicitly moved to a follow-up issue, with a link provided under the "Out of Scope" section.
 - An engineer or fresh agent with zero prior context can implement the task entirely from the issue description and its linked documents.
 
+- Allowed Context: Issue description, `AGENTS.md`, and anything inside `_docs/`.
+- Forbidden Context: Source code files and implementation directories (`src/`, backend code, test directories). Rely on `_docs/` for architectural understanding.
+
 Constraint: Never silently drop scope. If a requirement or request does not belong in this specific task, you must file a separate follow-up issue and list it under out of scope with its link so its destination is transparent.

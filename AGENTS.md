@@ -9,6 +9,7 @@ Core Rules
 - Tooling Stack: Use `gh` for GitHub, `docker` for containers, `pytest` for testing.
 - Dependencies: Dependencies must be added in `pyproject.toml`. Do not add one without asking.
 - Direct Execution: Prefer direct shell execution (`gh`, `git`, `pytest`) over writing custom automation scripts for batch tasks.
+- Don’t make assumptions. Ask questions when needed.
 
 Documentation Index
 - `_docs/process.md` — Agent workflow rules, execution preferences, and how work is organized.
