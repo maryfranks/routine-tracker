@@ -8,6 +8,9 @@
 ## 2. Commit & Code Standards
 - **Commit Regularly:** Make small, atomic commits with clear, descriptive messages. 
 - **Simplicity First:** Do the simplest thing that works. Avoid over-engineering.
+- **Python Style & Formatting:** Strict adherence to PEP 8. Code must be formatted and linted using **Ruff**.
+- **Type Safety:** Full type hinting (`typing` module) is mandatory on all functions, methods, and classes. 
+- **Pydantic Validation:** All request bodies, response payloads, and configuration settings must use Pydantic models with explicit field validation where applicable.
 
 
 ## 3. Verification
