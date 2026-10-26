@@ -9,6 +9,9 @@ servers:
   - url: http://localhost:8000
     description: Local development server
 
+security:
+  - cookieAuth: []
+
 paths:
   /api/auth/register:
     post:
@@ -16,6 +19,7 @@ paths:
       operationId: registerUser
       tags:
         - Authentication
+      security: []
       requestBody:
         required: true
         content:
@@ -52,6 +56,7 @@ paths:
       operationId: loginUser
       tags:
         - Authentication
+      security: []
       requestBody:
         required: true
         content:
@@ -74,6 +79,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
         '401':
           description: Invalid credentials
           content:
@@ -88,8 +99,14 @@ paths:
       tags:
         - Authentication
       responses:
-        '200':
+        '204':
           description: Successfully logged out
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 
   /api/auth/me:
     get:
@@ -124,6 +141,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClockState'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 
   /api/clock/advance:
     post:
@@ -146,6 +169,22 @@ paths:
       responses:
         '200':
           description: Clock advanced successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClockState'
+        '400':
+          description: Invalid unit parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 
   /api/clock/reset:
     post:
@@ -156,6 +195,16 @@ paths:
       responses:
         '200':
           description: Clock reset successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClockState'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 
   /api/views:
     get:
@@ -172,6 +221,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ViewSummary'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
     post:
       summary: Create a new custom view
       operationId: createView
@@ -201,6 +256,12 @@ paths:
                 $ref: '#/components/schemas/View'
         '400':
           description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authenticated
           content:
             application/json:
               schema:
@@ -246,6 +307,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
         '404':
           description: View not found
           content:
@@ -266,6 +333,12 @@ paths:
       responses:
         '204':
           description: View deleted successfully
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
         '404':
           description: View not found
           content:
@@ -294,6 +367,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TaskWithStatus'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
         '404':
           description: View not found
           content:
@@ -336,6 +415,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
         '404':
           description: View not found
           content:
@@ -370,8 +455,18 @@ paths:
       responses:
         '200':
           description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
         '400':
           description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authenticated
           content:
             application/json:
               schema:
@@ -396,6 +491,12 @@ paths:
       responses:
         '204':
           description: Task deleted successfully
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
         '404':
           description: Task not found
           content:
@@ -429,6 +530,22 @@ paths:
       responses:
         '200':
           description: Task completion updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskWithStatus'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
         '404':
           description: Task not found
           content:
@@ -451,6 +568,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ViewHistory'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 
   /api/demo:
     post:
@@ -458,9 +581,20 @@ paths:
       operationId: loadDemoData
       tags:
         - Utilities
+      security: []
       responses:
         '200':
           description: Demo data loaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '500':
+          description: Server error loading demo data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 
   /api/reset:
     post:
@@ -468,11 +602,29 @@ paths:
       operationId: resetToEmpty
       tags:
         - Utilities
+      security: []
       responses:
         '200':
           description: Database reset successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '500':
+          description: Server error resetting database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 
 components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session
+      description: HTTP-only session cookie for user authentication.
+
   schemas:
     Cadence:
       type: string
@@ -633,4 +785,12 @@ components:
         - detail
       properties:
         detail:
+          type: string
+
+    SuccessMessage:
+      type: object
+      required:
+        - message
+      properties:
+        message:
           type: string
