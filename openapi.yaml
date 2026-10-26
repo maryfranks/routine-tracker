@@ -1,0 +1,636 @@
+openapi: 3.0.3
+info:
+  title: Routine Tracker API
+  version: 1.0.0
+  description: |
+    Comprehensive REST API specification for the Routine Tracker application, governing authentication,
+    time/clock simulation, custom views, task management, historical logs, and demo/reset utilities.
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      operationId: registerUser
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+      responses:
+        '201':
+          description: User successfully registered and authenticated (sets HTTP-only auth cookie)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input or email already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/auth/login:
+    post:
+      summary: Authenticate user and establish session
+      operationId: loginUser
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successfully authenticated (sets HTTP-only auth cookie)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/auth/logout:
+    post:
+      summary: Log out current user and clear session cookie
+      operationId: logoutUser
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: Successfully logged out
+
+  /api/auth/me:
+    get:
+      summary: Get current authenticated user profile
+      operationId: getCurrentUser
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: Current user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/clock:
+    get:
+      summary: Get current simulated clock state
+      operationId: getClock
+      tags:
+        - Clock Simulation
+      responses:
+        '200':
+          description: Current clock state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClockState'
+
+  /api/clock/advance:
+    post:
+      summary: Advance the simulated clock
+      operationId: advanceClock
+      tags:
+        - Clock Simulation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - unit
+              properties:
+                unit:
+                  type: string
+                  enum: [day, week, month]
+      responses:
+        '200':
+          description: Clock advanced successfully
+
+  /api/clock/reset:
+    post:
+      summary: Reset the simulated clock to present time
+      operationId: resetClock
+      tags:
+        - Clock Simulation
+      responses:
+        '200':
+          description: Clock reset successfully
+
+  /api/views:
+    get:
+      summary: List all custom views with task counts
+      operationId: listViews
+      tags:
+        - Views
+      responses:
+        '200':
+          description: List of views with task and completion counts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ViewSummary'
+    post:
+      summary: Create a new custom view
+      operationId: createView
+      tags:
+        - Views
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - cadence
+              properties:
+                name:
+                  type: string
+                  maxLength: 80
+                cadence:
+                  $ref: '#/components/schemas/Cadence'
+      responses:
+        '201':
+          description: View created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/View'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/views/{id}:
+    put:
+      summary: Update an existing custom view
+      operationId: updateView
+      tags:
+        - Views
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - cadence
+              properties:
+                name:
+                  type: string
+                  maxLength: 80
+                cadence:
+                  $ref: '#/components/schemas/Cadence'
+      responses:
+        '200':
+          description: View updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/View'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: View not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      summary: Delete a custom view and its tasks/completions
+      operationId: deleteView
+      tags:
+        - Views
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: View deleted successfully
+        '404':
+          description: View not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/views/{viewId}/tasks:
+    get:
+      summary: List tasks for a specific view with status for active period
+      operationId: listTasks
+      tags:
+        - Tasks
+      parameters:
+        - name: viewId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of tasks with completion status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskWithStatus'
+        '404':
+          description: View not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      summary: Create a new task within a view
+      operationId: createTask
+      tags:
+        - Tasks
+      parameters:
+        - name: viewId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+                  maxLength: 80
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: View not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/tasks/{id}:
+    put:
+      summary: Update task title
+      operationId: updateTask
+      tags:
+        - Tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+                  maxLength: 80
+      responses:
+        '200':
+          description: Task updated successfully
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      summary: Delete a task and its completions
+      operationId: deleteTask
+      tags:
+        - Tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Task deleted successfully
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/tasks/{id}/done:
+    post:
+      summary: Set completion status for task in current active period
+      operationId: setTaskDone
+      tags:
+        - Tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - done
+              properties:
+                done:
+                  type: boolean
+      responses:
+        '200':
+          description: Task completion updated successfully
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/history:
+    get:
+      summary: Get historical completion logs across all views and past periods
+      operationId: getHistory
+      tags:
+        - History
+      responses:
+        '200':
+          description: Historical views and periods
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ViewHistory'
+
+  /api/demo:
+    post:
+      summary: Load demo seed data into database
+      operationId: loadDemoData
+      tags:
+        - Utilities
+      responses:
+        '200':
+          description: Demo data loaded successfully
+
+  /api/reset:
+    post:
+      summary: Reset database to empty state
+      operationId: resetToEmpty
+      tags:
+        - Utilities
+      responses:
+        '200':
+          description: Database reset successfully
+
+components:
+  schemas:
+    Cadence:
+      type: string
+      enum: [daily, weekly, monthly]
+
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - createdAt
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        createdAt:
+          type: string
+          format: date-time
+
+    View:
+      type: object
+      required:
+        - id
+        - name
+        - cadence
+        - createdAt
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          maxLength: 80
+        cadence:
+          $ref: '#/components/schemas/Cadence'
+        createdAt:
+          type: string
+          format: date-time
+
+    ViewSummary:
+      allOf:
+        - $ref: '#/components/schemas/View'
+        - type: object
+          required:
+            - taskCount
+            - doneCount
+          properties:
+            taskCount:
+              type: integer
+              minimum: 0
+            doneCount:
+              type: integer
+              minimum: 0
+
+    Task:
+      type: object
+      required:
+        - id
+        - viewId
+        - title
+        - createdAt
+      properties:
+        id:
+          type: string
+        viewId:
+          type: string
+        title:
+          type: string
+          maxLength: 80
+        createdAt:
+          type: string
+          format: date-time
+
+    TaskWithStatus:
+      allOf:
+        - $ref: '#/components/schemas/Task'
+        - type: object
+          required:
+            - done
+          properties:
+            done:
+              type: boolean
+
+    ClockOffset:
+      type: object
+      required:
+        - days
+        - months
+      properties:
+        days:
+          type: integer
+        months:
+          type: integer
+
+    ClockState:
+      type: object
+      required:
+        - now
+        - simulated
+        - offset
+      properties:
+        now:
+          type: string
+          format: date-time
+        simulated:
+          type: boolean
+        offset:
+          $ref: '#/components/schemas/ClockOffset'
+
+    HistoryTask:
+      type: object
+      required:
+        - id
+        - title
+        - done
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        done:
+          type: boolean
+
+    HistoryPeriod:
+      type: object
+      required:
+        - key
+        - start
+        - tasks
+      properties:
+        key:
+          type: string
+        start:
+          type: string
+          format: date-time
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/HistoryTask'
+
+    ViewHistory:
+      type: object
+      required:
+        - view
+        - periods
+      properties:
+        view:
+          $ref: '#/components/schemas/View'
+        periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/HistoryPeriod'
+
+    ApiError:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
