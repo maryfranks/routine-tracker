@@ -21,16 +21,16 @@ Roles
 - QA: checks finished work against the issue acceptance criteria (following `_docs/agent_roles/qa.md`)
 
 - Orchestration Loop:
-  - The main session acts as the orchestrator, launching the software engineer and QA as subagents.
-  - Lifecycle:
+- The main session acts as the orchestrator, launching the software engineer and QA as subagents.
+- Lifecycle:
     1. Select the next open issue from the backlog.
-    2. Engineer implements the issue.
+    2. Engineer implements the issue on a feature branch.
     3. QA verifies the implementation.
     4. On FAIL, return to step 2 with the QA comment as input (maximum of 2 retry attempts).
     5. If the retry limit is reached without a PASS, halt execution and flag for human review.
-    6. On PASS, close the issue.
+    6. On PASS, merge the feature branch into main, push the changes, and then close the issue.
     7. Repeat until the backlog is empty.
-  - Rules:
+- Rules:
     - The engineer does not close the issue.
     - QA does not modify code, only outputs PASS or FAIL.
-    - The orchestrator closes the issue only after QA outputs PASS.
+    - The orchestrator merges the feature branch and closes the issue only after QA outputs PASS.
