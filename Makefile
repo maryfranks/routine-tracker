@@ -1,4 +1,4 @@
-.PHONY: help frontend-install frontend-dev frontend-build frontend-preview frontend-test frontend-lint frontend-format backend-install backend-dev
+.PHONY: help frontend-install frontend-dev frontend-build frontend-preview frontend-test frontend-lint frontend-format backend-install backend-dev backend-test
 
 .DEFAULT_GOAL := help
 
@@ -14,9 +14,10 @@ help:
 	@echo "  make frontend-lint      - Lint frontend code (bun run lint)"
 	@echo "  make frontend-format    - Format frontend code with Prettier (bun run format)"
 	@echo ""
-	@echo "Backend (Coming soon):"
-	@echo "  make backend-install    - Install backend dependencies"
-	@echo "  make backend-dev        - Run backend development server"
+	@echo "Backend:"
+	@echo "  make backend-install    - Install backend dependencies (uv sync)"
+	@echo "  make backend-dev        - Run backend development server (uv run uvicorn)"
+	@echo "  make backend-test       - Run backend tests (uv run pytest)"
 
 # --- Frontend Commands ---
 frontend-install:
@@ -40,11 +41,12 @@ frontend-lint:
 frontend-format:
 	cd frontend && bun run format
 
-# --- Backend Commands (Placeholder) ---
+# --- Backend Commands ---
 backend-install:
-	@echo "Backend install command not configured yet."
-	# Example for later: uv sync
+	uv sync
 
 backend-dev:
-	@echo "Backend dev command not configured yet."
-	# Example for later: uv run uvicorn backend.main:app --reload
+	uv run uvicorn backend.main:app --reload
+
+backend-test:
+	uv run pytest
