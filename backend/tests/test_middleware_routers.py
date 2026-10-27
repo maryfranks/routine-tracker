@@ -35,9 +35,9 @@ def test_routers_registered():
     response = client.get("/api/views")
     assert response.status_code == 401
 
-    # History router
+    # History router - unauthenticated should return 401
     response = client.get("/api/history")
-    assert response.status_code == 200
+    assert response.status_code == 401
 
     # Utilities router
     response = client.post("/api/demo")
