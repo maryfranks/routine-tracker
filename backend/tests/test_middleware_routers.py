@@ -23,9 +23,9 @@ def test_routers_registered():
     assert response.status_code == 200
     assert response.json() == {"status": "healthy"}
 
-    # Auth router
+    # Auth router - unauthenticated should return 401
     response = client.get("/api/auth/me")
-    assert response.status_code == 200
+    assert response.status_code == 401
 
     # Clock router
     response = client.get("/api/clock")
