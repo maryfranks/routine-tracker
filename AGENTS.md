@@ -17,4 +17,5 @@ Documentation Index
 
 Roles
 - PM: refines a task before anyone implements it (following _docs/agent_roles/pm.md)
-- Engineer: implements one refined task, (following _docs/team/software_engineer.md)
+- Engineer: implements one refined task, (following _docs/agent_roles/software_engineer.md)
+- QA: checks finished work against the issue acceptance criteria (following `_docs/agent_roles/qa.md`)
