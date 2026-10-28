@@ -4,14 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function ErrorState({ error, onRetry }: { error: unknown; onRetry: () => void }) {
+  const message = error instanceof Error ? error.message : "Something went wrong.";
+  const isAuthError = message.toLowerCase().includes("unauthorized") || message.toLowerCase().includes("not authenticated") || message.toLowerCase().includes("401");
+
   return (
     <div role="alert" className="flex flex-col items-center gap-3 rounded-lg border border-destructive/30 bg-destructive/5 px-6 py-10 text-center">
       <AlertCircle className="size-6 text-destructive" />
       <p className="font-medium">Couldn't load this</p>
-      <p className="max-w-sm text-sm text-muted-foreground">
-        {error instanceof Error ? error.message : "Something went wrong."}
-      </p>
-      <Button variant="outline" size="sm" onClick={onRetry}>Try again</Button>
+      <p className="max-w-sm text-sm text-muted-foreground">{message}</p>
+      <div className="flex gap-2">
+        {isAuthError ? (
+          <Button asChild size="sm">
+            <a href="/login">Sign in</a>
+          </Button>
+        ) : (
+          <Button variant="outline" size="sm" onClick={onRetry}>Try again</Button>
+        )}
+      </div>
     </div>
   );
 }
