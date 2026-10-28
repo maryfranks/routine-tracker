@@ -21,25 +21,25 @@ help:
 
 # --- Frontend Commands ---
 frontend-install:
-	cd frontend && bun install
+	bun --cwd frontend install
 
 frontend-dev:
-	cd frontend && bun run dev -- --host
+	bun --cwd frontend run dev -- --host
 
 frontend-build:
-	cd frontend && bun run build
+	bun --cwd frontend run build
 
 frontend-preview:
-	cd frontend && bun run preview
+	bun --cwd frontend run preview
 
 frontend-test:
-	cd frontend && bun test
+	bun --cwd frontend test
 
 frontend-lint:
-	cd frontend && bun run lint
+	bun --cwd frontend run lint
 
 frontend-format:
-	cd frontend && bun run format
+	bun --cwd frontend run format
 
 # --- Backend Commands ---
 backend-install:
