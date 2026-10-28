@@ -10,7 +10,53 @@ A modular, canvas-based habit tracker designed around flexible daily, weekly, an
 ---
 
 ## 🚀 Getting Started & Local Development 🦖
-*(Coming soon — instructions for local setup, environment variables, running the app, and executing the test suite will live here once the code and tech stack are established!)*
+
+Follow these steps to set up and run Routine Tracker locally.
+
+### Prerequisites
+- **Python (>= 3.10)** with **uv** installed for backend package management.
+- **Bun** (>= 22.0.0 / 1.4.4+) installed for frontend package management.
+
+### 1. Install Dependencies
+You can install dependencies for both backend and frontend from the repository root:
+```bash
+# Install backend dependencies
+make backend-install
+# or: uv sync
+
+# Install frontend dependencies
+make frontend-install
+# or: bun --cwd frontend install
+```
+
+### 2. Run the Application Locally
+Run the backend and frontend development servers in two separate terminal windows from the repository root:
+
+* **Terminal 1: Backend Server**
+  ```bash
+  make backend-dev
+  # or: uv run uvicorn backend.main:app --reload
+  ```
+  The FastAPI backend API will be available at `http://localhost:8000` (with interactive docs at `/docs`).
+
+* **Terminal 2: Frontend Development Server**
+  ```bash
+  make frontend-dev
+  # or: bun --cwd frontend run dev -- --host
+  ```
+  The Vite frontend development server will be available at `http://localhost:5173`.
+
+### 3. Running Tests
+* **Backend Tests:**
+  ```bash
+  make backend-test
+  # or: uv run pytest
+  ```
+* **Frontend Tests:**
+  ```bash
+  make frontend-test
+  # or: bun --cwd frontend test
+  ```
 
 ---
 
