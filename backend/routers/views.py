@@ -10,6 +10,7 @@ from backend.models.view import View
 from backend.models.task import Task
 from backend.models.completion_log import CompletionLog
 from backend.security import get_current_user
+from backend.routers.clock import get_simulated_now
 
 router = APIRouter(prefix="/api/views", tags=["Views"])
 
@@ -43,7 +44,7 @@ class ViewSummaryResponse(ViewResponse):
 
 def get_current_period_key(cadence: str, dt: datetime = None) -> str:
     if dt is None:
-        dt = datetime.utcnow()
+        dt = get_simulated_now()
     if cadence == "daily":
         return f"d:{dt.strftime('%Y-%m-%d')}"
     elif cadence == "weekly":
