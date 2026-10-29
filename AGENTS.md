@@ -1,3 +1,5 @@
+<!-- Identifier: Agent Guidelines | Audience: Agents -->
+
 Agent Instructions
 
 Quick Start / Commands
@@ -19,6 +21,7 @@ Roles
 - PM: refines a task before anyone implements it (following _docs/agent_roles/pm.md)
 - Engineer: implements one refined task, (following _docs/agent_roles/software_engineer.md)
 - QA: checks finished work against the issue acceptance criteria (following `_docs/agent_roles/qa.md`)
+- Librarian: writes and updates documentation (following `_docs/agent_roles/librarian.md)
 
 - Orchestration Loop:
 - The main session acts as the orchestrator, launching the software engineer and QA as subagents.

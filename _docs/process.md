@@ -1,8 +1,10 @@
+<!-- Identifier: Team & Agent Process | Audience: Humans & Agents -->
+
 # Team & Agent Development Process
 
 ## 1. Task & Branch Workflow
 - **One at a Time:** Pick up a single GitHub issue. Do not mix scopes.
-- **Branching:** Always create a dedicated feature branch from `main` using the format `<issue-number>-<short-description>`.
+- **Branching:** Always create a dedicated feature branch from `main` using the format `<issue-number>-<short-description>`, `fix-<short-description>`, or `docs-<short-description>`.
 - **Acceptance Criteria:** Read the issue criteria carefully before starting and verify them before opening a pull request.
 
 ## 2. Commit & Code Standards
