@@ -1,5 +1,7 @@
 # AI Usage & Methodology Report: Building an Agentic DevOps Workflow
 
+This was my first project working with agents. I let the agents generate absolutely everything, including documentation. The information below was produced when I asked the agent to summarize how we had been working together. I did some minor editing for accuracy. 
+
 ## 1. Token Management
 * **Atomic Tasks:** Breaking work into single-issue tickets keeps context windows clean and stops tokens from burning on irrelevant history.
 * **Targeted Files:** Agents only load the specific files needed for the active task instead of pulling in the whole repo.
