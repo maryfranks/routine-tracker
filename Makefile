@@ -1,4 +1,4 @@
-.PHONY: help frontend-install frontend-dev frontend-build frontend-preview frontend-test frontend-lint frontend-format backend-install backend-dev backend-test
+.PHONY: help frontend-install frontend-dev frontend-build frontend-preview frontend-test frontend-lint frontend-format backend-install backend-dev backend-test backend-seed
 
 .DEFAULT_GOAL := help
 
@@ -18,6 +18,7 @@ help:
 	@echo "  make backend-install    - Install backend dependencies (uv sync)"
 	@echo "  make backend-dev        - Run backend development server (uv run uvicorn)"
 	@echo "  make backend-test       - Run backend tests (uv run pytest)"
+	@echo "  make backend-seed       - Seed backend database with test data (uv run python -m backend.seed)"
 
 # --- Frontend Commands ---
 frontend-install:
@@ -50,3 +51,6 @@ backend-dev:
 
 backend-test:
 	uv run pytest
+
+backend-seed:
+	uv run python -m backend.seed

@@ -36,7 +36,15 @@ make frontend-install
 # or: bun --cwd frontend install
 ```
 
-### 2. Run the Application Locally
+### 2. Seed the Database
+Populate the SQLite database (`dev.db`) with initial test users, views, tasks, and completion logs:
+```bash
+make backend-seed
+# or: uv run python -m backend.seed
+```
+*(Note: Seeding resets the database by dropping existing tables and recreating them with fresh test data).*
+
+### 3. Run the Application Locally
 Run the backend and frontend development servers in two separate terminal windows from the repository root:
 
 * **Terminal 1: Backend Server**
@@ -53,7 +61,7 @@ Run the backend and frontend development servers in two separate terminal window
   ```
   The Vite frontend development server is available at `http://localhost:5173`.
 
-### 3. Running Tests
+### 4. Running Tests
 * **Backend Tests:**
   ```bash
   make backend-test
@@ -102,6 +110,7 @@ Routine Tracker utilizes a standardized `Makefile` to orchestrate build, develop
 
 - **Dependencies:** `make backend-install` (`uv sync`) and `make frontend-install` (`bun install`).
 - **Development Servers:** `make backend-dev` (FastAPI with reload) and `make frontend-dev` (Vite dev server).
+- **Database Seeding:** `make backend-seed` (`uv run python -m backend.seed`).
 - **Test Suites:** `make backend-test` (`uv run pytest`) and `make frontend-test` (`bun test`).
 - **Code Quality:** Frontend linting (`make frontend-lint`) and formatting (`make frontend-format` with Prettier).
 
