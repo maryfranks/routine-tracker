@@ -123,3 +123,4 @@ This project is built using an intentional, structured artificial intelligence (
 ## ROADMAP
 
 Review repository after a few months to measure progress. 
+Use specialized agents for security reviews, testing reviews, and code refactoring.
