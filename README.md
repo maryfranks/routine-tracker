@@ -6,13 +6,13 @@ A modular, canvas-based habit tracker designed around flexible daily, weekly, an
 
 ## 🚀 Application Demonstration (App Demo) 🦖
 
-The Routine Tracker interface provides an interactive, canvas-based board for organizing and tracking daily, weekly, and monthly habits:
+The Routine Tracker interface provides an interface for organizing and tracking daily, weekly, and monthly habits:
 
-- **Routine Cards:** Single-purpose tracking windows residing on a freeform board space.
-- **Card Flipping:** Individual routine cards flip to reveal historical consistency and completion analytics over time.
-- **Views & Stacks:** Habits group into custom views for building sustainable habit stacks.
+![View Routines](./images/Routine_Tracker_Routines_View.png "View Routines")
+![Log In](./images/Routine_Tracker_Log_In.png "Log In")
+![Routine History](./images/Routine_Tracker_History.png "Routine History")
+![Add Routines](./images/Routine_Tracker_New_Routines.png "Add Routines")
 
-*(Screenshots of the running application interface will be added here once captured from the local development environment).*
 
 ---
 
@@ -118,24 +118,8 @@ Routine Tracker utilizes a standardized `Makefile` to orchestrate build, develop
 
 ## 🤖 AI-Native Development & Agentic Workflow
 
-This project is built using an intentional, structured artificial intelligence (AI)-native development methodology, treating AI coding agents as specialized team members rather than general-purpose code generators. The workflow maximizes resource efficiency, maintains architectural rigor, and prevents agent drift through strict guardrails.
+This project is built using an intentional, structured artificial intelligence (AI)-native development methodology, treating AI coding agents as specialized team members rather than general-purpose code generators. The workflow maximizes resource efficiency, maintains architectural rigor, and prevents agent drift through strict guardrails. See `_docs/ai_usage_report.md` for more details.
 
-### Core Pillars of the Workflow:
+## ROADMAP
 
-* **Strategic Model Selection & Resource Optimization:** 
-  * Day-to-day planning, brainstorming, and scoping utilize lighter models via the web interface to conserve resources.
-  * Purpose-built agent environments (such as Lovable/v0 for frontend prototyping, Codex for backend logic, and Gemini Command Line Interface (CLI) for quality assurance (QA)/non-coding loops) deploy for specific implementation tasks.
-  * Periodic audits using heavier models verify code quality and architectural integrity.
-* **Specialized Agent Roles & Guardrails (`process.md`):** 
-  * Agent personas (such as Product Manager (PM), Software Engineer (SWE), and QA) are explicitly defined.
-  * Operational guardrails and instructions embed in a dedicated `process.md` file to guide agents and eliminate repetitive corrections.
-* **Hyper-Lean Context Engineering:** 
-  * Documentation breaks down into small, targeted markdown files (such as product requirements documents (PRDs) and technical specifications).
-  * Agents read only the specific files required for immediate tasks, relying on up-to-date specifications rather than parsing massive codebases.
-* **Controlled, Step-by-Step Execution Loops:** 
-  * Work avoids massive, uncontrolled batch generation. 
-  * Tasks execute iteratively (such as executing a single GitHub issue, reviewing output, updating documentation, and refining) before permitting autonomous execution loops.
-* **Incremental Changes & Git Hygiene:** 
-  * Code changes remain small, modular, and highly testable.
-  * Functionality and testability take precedence over rigid styling rules (such as strict Pydantic best practices or deep code style linting).
-  * Frequent commits ensure rapid review cycles and simple rollbacks.
+Review repository after a few months to measure progress. 
